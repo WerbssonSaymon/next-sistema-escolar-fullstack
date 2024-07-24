@@ -1,8 +1,23 @@
 import React from "react";
 import axios from "axios";
-import styled from "styled-components";
-import { FaTrash, FaEdit } from "react-icons/fa";
 import { toast } from "react-toastify";
+import styled from "styled-components";
+import { FaEdit, FaTrash } from "react-icons/fa";
+
+// Definindo os tipos para as props e os usuários
+interface User {
+  id?: number;
+  nome: string;
+  email: string;
+  fone: string;
+  data_nascimento: string;
+}
+
+interface GridProps {
+  users: User[];
+  setUsers: React.Dispatch<React.SetStateAction<User[]>>;
+  setOnEdit: (user: User | null) => void;
+}
 
 const Table = styled.table`
   width: 100%;
@@ -21,7 +36,7 @@ export const Tbody = styled.tbody``;
 
 export const Tr = styled.tr``;
 
-export const Th = styled.th`
+export const Th = styled.th<{ onlyWeb?: boolean }>`
   text-align: start;
   border-bottom: inset;
   padding-bottom: 5px;
@@ -31,7 +46,7 @@ export const Th = styled.th`
   }
 `;
 
-export const Td = styled.td`
+export const Td = styled.td<{ alignCenter?: boolean; width?: string; onlyWeb?: boolean }>`
   padding-top: 15px;
   text-align: ${(props) => (props.alignCenter ? "center" : "start")};
   width: ${(props) => (props.width ? props.width : "auto")};
@@ -41,22 +56,20 @@ export const Td = styled.td`
   }
 `;
 
-const Grid = ({ users, setUsers, setOnEdit }) => {
-  const handleEdit = (item) => {
+export default function Grid({ users, setUsers, setOnEdit }: GridProps) {
+  const handleEdit = (item: User) => {
     setOnEdit(item);
   };
 
-  const handleDelete = async (id) => {
-    await axios
-      .delete("http://localhost:8800/" + id)
-      .then(({ data }) => {
-        const newArray = users.filter((user) => user.id !== id);
-
-        setUsers(newArray);
-        toast.success(data);
-      })
-      .catch(({ data }) => toast.error(data));
-
+  const handleDelete = async (id: number) => {
+    try {
+      const response = await axios.delete(`http://localhost:8800/${id}`);
+      const newArray = users.filter((user) => user.id !== id);
+      setUsers(newArray);
+      toast.success(response.data);
+    } catch (error: any) {
+      toast.error(error.response.data);
+    }
     setOnEdit(null);
   };
 
@@ -83,13 +96,11 @@ const Grid = ({ users, setUsers, setOnEdit }) => {
               <FaEdit onClick={() => handleEdit(item)} />
             </Td>
             <Td alignCenter width="5%">
-              <FaTrash onClick={() => handleDelete(item.id)} />
+              <FaTrash onClick={() => handleDelete(item.id!)} />
             </Td>
           </Tr>
         ))}
       </Tbody>
     </Table>
   );
-};
-
-export default Grid;
+}
