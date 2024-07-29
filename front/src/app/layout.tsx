@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import LateralMenu from "@/components/generalComponents/LateralMenu";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -15,8 +16,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={inter.className}>{children}</body>
+    <html lang="en">     
+      <body className={inter.className}>
+        <main className="flex">
+          <section className="h-[100vh] bg-blue-800">
+            <LateralMenu/>
+          </section>
+          <section className="h-[100vh] w-[100%] bg-blue-100">
+            {children}
+          </section>
+        </main>
+      </body>
     </html>
   );
 }

@@ -56,7 +56,7 @@ export const Td = styled.td<{ alignCenter?: boolean; width?: string; onlyWeb?: b
   }
 `;
 
-export default function Grid({ users, setUsers, setOnEdit }: GridProps) {
+export default function GridUser({ users, setUsers, setOnEdit }: GridProps) {
   const handleEdit = (item: User) => {
     setOnEdit(item);
   };

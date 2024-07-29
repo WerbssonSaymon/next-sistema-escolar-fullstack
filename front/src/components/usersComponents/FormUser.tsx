@@ -54,7 +54,7 @@ const Button = styled.button`
   height: 42px;
 `;
 
-export default function Form({ getUsers, onEdit, setOnEdit }: FormProps) {
+export default function FormUser({ getUsers, onEdit, setOnEdit }: FormProps) {
   const ref = useRef<HTMLFormElement>(null);
 
   useEffect(() => {
