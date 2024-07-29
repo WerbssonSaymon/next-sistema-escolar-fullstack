@@ -2,9 +2,9 @@ import { useEffect, useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
-import styled from "styled-components";
 import FormUser from "./FormUser";
 import GridUser from "./GridUser";
+import { Container } from "./ContainerStyled";
 
 // Definindo os tipos para os usuários
 interface User {
@@ -14,18 +14,6 @@ interface User {
   fone: string;
   data_nascimento: string;
 }
-
-const Container = styled.div`
-  width: 100%;
-  max-width: 800px;
-  margin-top: 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-`;
-
-const Title = styled.h2``;
 
 export default function AppUser() {
   const [users, setUsers] = useState<User[]>([]);
@@ -47,7 +35,7 @@ export default function AppUser() {
   return (
     <>
       <Container>
-        <Title>USUÁRIOS</Title>
+        <h2>USUÁRIOS</h2>
         <FormUser onEdit={onEdit} setOnEdit={setOnEdit} getUsers={getUsers} />
         <GridUser setOnEdit={setOnEdit} users={users} setUsers={setUsers} />
       </Container>
